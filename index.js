@@ -27,6 +27,13 @@ async function run() {
 
     const juteAndWoodenCrats = client.db("artAndCraftDB").collection("juteAndWoodenCrafts");
 
+    // Get art and craft items
+    app.get("/all-items", async (req, res) => {
+      const cursor = juteAndWoodenCrats.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Add art and craft items
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
