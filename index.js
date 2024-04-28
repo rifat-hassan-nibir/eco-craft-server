@@ -42,11 +42,19 @@ async function run() {
       res.send(result);
     });
 
-    // Get single item data with id using fetch
+    // Get single item data with id
     app.get("/craft-item-details/:id", async (req, res) => {
       const id = req.params;
       const query = { _id: new ObjectId(id) };
       const result = await allCraftsCollection.findOne(query);
+      res.send(result);
+    });
+
+    // Get single item data with email
+    app.get("/my-art-and-craft-list/:email", async (req, res) => {
+      const { email } = req.params;
+      const query = { user_email: email };
+      const result = await allCraftsCollection.find(query).toArray();
       res.send(result);
     });
 
