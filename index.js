@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -25,11 +25,11 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const juteAndWoodenCrats = client.db("artAndCraftDB").collection("juteAndWoodenCrafts");
+    const allCraftsCollection = client.db("artAndCraftDB").collection("juteAndWoodenCrafts");
 
     // Get art and craft items
     app.get("/all-items", async (req, res) => {
-      const cursor = juteAndWoodenCrats.find();
+      const cursor = allCraftsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -38,7 +38,15 @@ async function run() {
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
       console.log(artAndCraftItems);
-      const result = await juteAndWoodenCrats.insertOne(artAndCraftItems);
+      const result = await allCraftsCollection.insertOne(artAndCraftItems);
+      res.send(result);
+    });
+
+    // Get single item data with id using fetch
+    app.get("/craft-item-details/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await allCraftsCollection.findOne(query);
       res.send(result);
     });
 
