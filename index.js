@@ -44,7 +44,7 @@ async function run() {
 
     // Get single item data with id
     app.get("/craft-item-details/:id", async (req, res) => {
-      const id = req.params;
+      const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await allCraftsCollection.findOne(query);
       res.send(result);
@@ -52,9 +52,31 @@ async function run() {
 
     // Get single item data with email
     app.get("/my-art-and-craft-list/:email", async (req, res) => {
-      const { email } = req.params;
+      const email = req.params.email;
       const query = { user_email: email };
       const result = await allCraftsCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // Update single item data with id
+    app.patch("/update-item/:id", async (req, res) => {
+      const id = req.params.id;
+      const item = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updatedItem = {
+        $set: {
+          image_url: item.image_url,
+          item_name: item.item_name,
+          subcategory_name: item.subcategory_name,
+          short_description: item.short_description,
+          price: item.price,
+          rating: item.rating,
+          customization: item.customization,
+          processing_time: item.processing_time,
+          stock_status: item.stock_status,
+        },
+      };
+      const result = await allCraftsCollection.updateOne(filter, updatedItem);
       res.send(result);
     });
 
