@@ -37,7 +37,6 @@ async function run() {
     // Add art and craft items
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
-      console.log(artAndCraftItems);
       const result = await allCraftsCollection.insertOne(artAndCraftItems);
       res.send(result);
     });
@@ -80,7 +79,6 @@ async function run() {
       // Delete my craft item using id
       app.delete("/delete-item/:id", async (req, res) => {
         const id = req.params.id;
-        console.log(id);
         const query = { _id: new ObjectId(id) };
         const result = await allCraftsCollection.deleteOne(query);
         res.send(result);
