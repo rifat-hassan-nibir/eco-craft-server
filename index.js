@@ -65,6 +65,15 @@ async function run() {
       res.send(result);
     });
 
+    // Get sub category data
+    app.get("/sub-category/:name", async (req, res) => {
+      const name = req.params.name;
+      console.log(name);
+      const query = { subcategory_name: name };
+      const result = await allCraftsCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // Update single item data with id
     app.patch("/update-item/:id", async (req, res) => {
       const id = req.params.id;
