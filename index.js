@@ -26,10 +26,18 @@ async function run() {
     // await client.connect();
 
     const allCraftsCollection = client.db("artAndCraftDB").collection("juteAndWoodenCrafts");
+    const subCategoriesCollection = client.db("artAndCraftDB").collection("subCategories");
 
     // Get art and craft items
     app.get("/all-items", async (req, res) => {
       const cursor = allCraftsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // test
+    app.get("/sub-categories", async (req, res) => {
+      const cursor = subCategoriesCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
