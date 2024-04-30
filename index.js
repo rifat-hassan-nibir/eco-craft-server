@@ -35,13 +35,6 @@ async function run() {
       res.send(result);
     });
 
-    // test
-    app.get("/sub-categories", async (req, res) => {
-      const cursor = subCategoriesCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
-
     // Add art and craft items
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
@@ -93,22 +86,21 @@ async function run() {
         },
       };
 
-      // Delete my craft item using id
-      app.delete("/delete/:id", async (req, res) => {
-        const id = req.params.id;
-        console.log(id);
-        const query = { _id: new ObjectId(id) };
-        const result = await allCraftsCollection.deleteOne(query);
-        res.send(result);
-      });
-
       const result = await allCraftsCollection.updateOne(filter, updatedItem);
+      res.send(result);
+    });
+
+    // Delete my craft item using id
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await allCraftsCollection.deleteOne(query);
       res.send(result);
     });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
