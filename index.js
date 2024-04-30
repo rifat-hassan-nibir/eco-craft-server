@@ -51,6 +51,16 @@ async function run() {
       res.send(result);
     });
 
+    // Get data with email and customization both
+    app.get("/customization/:email/:selectedOption", async (req, res) => {
+      const email = req.params.email;
+      const selectedOption = req.params.selectedOption;
+      console.log(email, selectedOption);
+      const query = { $and: [{ user_email: email }, { customization: selectedOption }] };
+      const result = await allCraftsCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // Add art and craft items
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
