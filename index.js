@@ -35,9 +35,19 @@ async function run() {
       res.send(result);
     });
 
+    // Get sub-categories
     app.get("/sub-categories", async (req, res) => {
       const cursor = subCategoriesCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // Get all data under single sub-category data
+    app.get("/sub-category/:name", async (req, res) => {
+      const name = req.params.name;
+      console.log(name);
+      const query = { subcategory_name: name };
+      const result = await allCraftsCollection.find(query).toArray();
       res.send(result);
     });
 
@@ -61,15 +71,6 @@ async function run() {
       const email = req.params.email;
       const query = { user_email: email };
       const result = await allCraftsCollection.find(query).toArray();
-      res.send(result);
-    });
-
-    // Get sub single category data
-    app.get("/sub-category/:name", async (req, res) => {
-      const name = req.params.name;
-      console.log(name);
-      const query = { subcategory_name: name };
-      const result = await subCategoriesCollection.find(query).toArray();
       res.send(result);
     });
 
