@@ -1,6 +1,6 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
@@ -35,6 +35,12 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/sub-categories", async (req, res) => {
+      const cursor = subCategoriesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Add art and craft items
     app.post("/add-craft-item", async (req, res) => {
       const artAndCraftItems = req.body;
@@ -50,7 +56,7 @@ async function run() {
       res.send(result);
     });
 
-    // Get single item data with email
+    // Get all item data with email
     app.get("/my-art-and-craft-list/:email", async (req, res) => {
       const email = req.params.email;
       const query = { user_email: email };
@@ -58,12 +64,12 @@ async function run() {
       res.send(result);
     });
 
-    // Get sub category data
+    // Get sub single category data
     app.get("/sub-category/:name", async (req, res) => {
       const name = req.params.name;
       console.log(name);
       const query = { subcategory_name: name };
-      const result = await allCraftsCollection.find(query).toArray();
+      const result = await subCategoriesCollection.find(query).toArray();
       res.send(result);
     });
 
